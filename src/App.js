@@ -5,6 +5,8 @@ import AssessmentPage from './components/AssessmentPage';
 import GamePage from './components/GamePage';
 import ResultsPage from './components/ResultsPage';
 import NotFoundPage from './components/NotFoundPage';
+import GamesListPage from './components/GamesListPage';
+import UserStatusPage from './components/UserStatusPage';
 
 const App = () => {
   return (
@@ -19,11 +21,12 @@ const App = () => {
         
         <main className="flex-grow">
           <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-            <Routes>
+          <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/status" element={<UserStatusPage />} />
               <Route path="/assessment" element={<AssessmentPage />} />
+              <Route path="/games" element={<GamesListPage />} />
               <Route path="/game/:type" element={<GamePage />} />
-              <Route path="/results" element={<ResultsPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </div>
