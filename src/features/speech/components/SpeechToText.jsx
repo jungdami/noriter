@@ -10,7 +10,6 @@ export const SpeechToText = ({ onTranscriptChange }) => {
     stopListening
   } = useSpeechRecognition();
 
-  // 부모 컴포넌트에 변환된 텍스트 전달
   useEffect(() => {
     if (transcript) {
       onTranscriptChange(transcript);

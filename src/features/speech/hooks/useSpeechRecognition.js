@@ -5,17 +5,14 @@ export const useSpeechRecognition = () => {
   const [transcript, setTranscript] = useState('');
   const [error, setError] = useState(null);
 
-  // Speech Recognition 객체 생성
   const recognition = new (window.SpeechRecognition ||
                          window.webkitSpeechRecognition)();
 
-  // 설정
   useEffect(() => {
     recognition.continuous = true;
     recognition.interimResults = true;
-    recognition.lang = 'ko-KR';  // 한국어 설정
+    recognition.lang = 'ko-KR';
 
-    // 이벤트 핸들러 등록
     recognition.onresult = (event) => {
       const current = event.resultIndex;
       const transcript = event.results[current][0].transcript;
@@ -28,7 +25,6 @@ export const useSpeechRecognition = () => {
     };
   }, []);
 
-  // 시작/중지 함수
   const startListening = useCallback(() => {
     try {
       recognition.start();
