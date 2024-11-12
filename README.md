@@ -1,70 +1,97 @@
-# Getting Started with Create React App
+# 정담이 (JungDam-E) - AI 기반 시니어 인지 건강 도우미
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=black)
+![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat-square&logo=OpenAI&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=TensorFlow&logoColor=white)
 
-## Available Scripts
+## 📋 프로젝트 소개
 
-In the project directory, you can run:
+**정담이**는 AI 기술을 활용하여 시니어의 인지 건강을 자연스럽게 평가하고 증진시키는 웹 애플리케이션입니다. 카메라를 통한 자동 사용자 감지, 자연스러운 대화를 통한 인지 기능 평가, 그리고 맞춤형 두뇌 훈련 게임을 제공합니다.
 
-### `npm start`
+### 🌟 주요 기능
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **자동 사용자 감지**: TensorFlow.js 기반 얼굴 인식으로 사용자를 자동 감지하여 상호작용을 시작합니다.
+- **자연스러운 대화 평가**: GPT와의 일상적인 대화를 통해 사용자의 인지 기능을 자연스럽게 평가합니다.
+- **음성 기반 상호작용**: 음성 인식과 음성 합성을 통해 자연스러운 대화 환경을 제공합니다.
+- **맞춤형 두뇌 훈련**: 평가 결과에 따라 개인화된 인지 훈련 프로그램을 추천합니다.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🔍 기술 스택
 
-### `npm test`
+### Frontend
+- React 18
+- TailwindCSS
+- TensorFlow.js (얼굴 인식)
+- Web Speech API (음성 인식/합성)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Backend
+- Node.js
+- OpenAI GPT API
+- Web Storage API
 
-### `npm run build`
+### 주요 라이브러리
+- `@tensorflow-models/face-detection`
+- `lucide-react`
+- `react-router-dom`
+- `axios`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 💡 핵심 구현 사항
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 1. 자동화된 사용자 인터랙션
+- TensorFlow.js 기반 실시간 얼굴 인식
+- 사용자 감지 시 자동 대화 시작
+- 세션 기반 사용자 상태 관리
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2. 자연스러운 인지 기능 평가
+- GPT를 활용한 맥락 기반 대화 평가
+- 기억력, 지남력, 판단력, 집중력 등 다양한 인지 영역 평가
+- 평가 결과의 정량화 및 저장
 
-### `npm run eject`
+### 3. 맞춤형 두뇌 훈련
+- 패턴 매칭 게임
+- 카드 매칭 게임
+- 사용자 수준별 난이도 조정
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🚀 설치 및 실행
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+# 저장소 클론
+git clone https://github.com/jungdami/jungdami
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+# 디렉토리 이동
+cd jungdam-e
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# 의존성 설치
+npm install
 
-## Learn More
+# 개발 서버 실행
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 👥 팀 구성 및 역할
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 정지현 - Frontend & UI
+- 카메라 인터페이스 및 사용자 감지 구현
+- UI/UX 디자인 및 개발
+- 세션 데이터 관리 및 상태 관리
 
-### Code Splitting
+### 홍윤기 - Backend & API
+- GPT API 통합 및 최적화
+- 프롬프트 엔지니어링
+- 세션 관리 시스템 구현
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 홍서윤 - 음성 인터페이스
+- 음성 인식/변환 시스템 구현
+- 음성 출력 최적화
+- 음성 인터페이스 사용성 개선
 
-### Analyzing the Bundle Size
+## 📱 스크린샷
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+[스크린샷들이 들어갈 자리입니다]
 
-### Making a Progressive Web App
+## 🔜 향후 계획
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [ ] 다국어 지원 추가
+- [ ] 더 다양한 인지 훈련 게임 추가
+- [ ] 장기적인 인지 기능 변화 추적 기능
+- [ ] 보호자 모니터링 시스템 구축
