@@ -1,28 +1,42 @@
-import React, { useState } from 'react';
-import { CameraComponent } from './features/camera/components/CameraComponent';
-import { TextToSpeech } from './features/speech/components/TextToSpeech';
-import { SpeechToText } from './features/speech/components/SpeechToText';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import AssessmentPage from './components/AssessmentPage';
+import GamePage from './components/GamePage';
+import ResultsPage from './components/ResultsPage';
+import NotFoundPage from './components/NotFoundPage';
 
-function App() {
-  const [transcript, setTranscript] = useState('');
-
-  const handleTranscriptChange = (transcript) => {
-    console.log(transcript);
-    setTranscript(transcript);
-  }
-
+const App = () => {
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">인지 능력 평가 시스템</h1>
-        <div className="bg-white rounded-lg shadow-lg p-4">
-          <CameraComponent />
+    <Router>
+      <div className="min-h-screen flex flex-col bg-gradient-to-b from-green-50 to-blue-50">
+        <header className="bg-white/80 backdrop-blur-sm shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+            <h1 className="text-2xl font-bold text-green-700">정담이</h1>
+            <p className="text-sm text-green-600 mt-1">AI 기반 인지 건강 도우미</p>
+          </div>
+        </header>
+        
+        <main className="flex-grow">
+          <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/assessment" element={<AssessmentPage />} />
+              <Route path="/game/:type" element={<GamePage />} />
+              <Route path="/results" element={<ResultsPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </div>
+        </main>
 
-          <SpeechToText onTranscriptChange={handleTranscriptChange} />
-        </div>
+        <footer className="bg-white/80 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 text-center">
+            <p className="text-sm text-gray-500">© 2024 인의예지 팀</p>
+          </div>
+        </footer>
       </div>
-    </div>
+    </Router>
   );
-}
+};
 
 export default App;
