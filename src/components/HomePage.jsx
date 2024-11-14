@@ -8,22 +8,22 @@ const HomePage = () => {
   const menuItems = [
     {
       icon: <User className="w-8 h-8" />,
-      title: "나의 현황",
-      description: "인지 능력 상태와 활동 기록을 확인해보세요",
+      title: "안방",
+      description: "인지 능력 상태와 활동 기록을 확인해 보세요",
       path: "/status",
       color: "bg-blue-500"
     },
     {
       icon: <MessageCircle className="w-8 h-8" />,
-      title: "다미와 대화",
-      description: "AI 도우미 다미와 즐거운 대화를 나눠보세요",
+      title: "수다방",
+      description: "AI 도우미 다미와 즐거운 대화를 나눠 보세요",
       path: "/assessment",
       color: "bg-green-500"
     },
     {
       icon: <Gamepad className="w-8 h-8" />,
-      title: "두뇌 게임",
-      description: "재미있는 게임으로 두뇌를 활성화해보세요",
+      title: "게임방",
+      description: "재미있는 게임으로 두뇌를 활성화해 보세요",
       path: "/games",
       color: "bg-purple-500"
     }

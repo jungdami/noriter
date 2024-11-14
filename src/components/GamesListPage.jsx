@@ -8,7 +8,7 @@ const GamesListPage = () => {
   const games = [
     {
       id: 'pattern',
-      title: '패턴 매칭 게임',
+      title: '순서 기억하기',
       description: '순서대로 나타나는 패턴을 기억하고 따라해보세요',
       icon: <Grid className="w-12 h-12 text-purple-500" />,
       recommended: '집중력 향상에 도움이 됩니다',
@@ -16,7 +16,7 @@ const GamesListPage = () => {
     },
     {
       id: 'memory',
-      title: '카드 매칭 게임',
+      title: '짝 맞추기',
       description: '짝을 이루는 카드를 찾아보세요',
       icon: <Puzzle className="w-12 h-12 text-blue-500" />,
       recommended: '기억력 향상에 도움이 됩니다',
