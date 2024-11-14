@@ -7,7 +7,7 @@ import { Volume2, VolumeX } from 'lucide-react';
 export const TextToSpeech = ({ 
   text, 
   autoPlay = true,
-  onSpeakingChange = () => {} 
+  onSpeakingChange = () => {}  // speaking 상태 변경 콜백 추가
 }) => {
   const {
     isSpeaking,
@@ -21,35 +21,28 @@ export const TextToSpeech = ({
     pitch: '1'
   });
 
+  // speaking 상태가 변경될 때마다 부모에게 알림
   useEffect(() => {
     onSpeakingChange(isSpeaking);
   }, [isSpeaking, onSpeakingChange]);
 
+  // 새로운 메시지 자동 재생
   useEffect(() => {
     if (text && autoPlay) {
-      console.log('Auto playing text:', text); // 디버깅용
       speak(text);
     }
     return () => stop();
   }, [text, autoPlay, speak, stop]);
 
-  const handleToggle = () => {
-    if (isSpeaking) {
-      stop();
-    } else if (text) {
-      speak(text);
-    }
-  };
-
   return (
     <div className="flex items-center justify-end space-x-2">
       {error && (
         <span className="text-red-500 text-sm">
-          음성 출력 실패: {error}
+          음성 출력에 실패했습니다
         </span>
       )}
       <button
-        onClick={handleToggle}
+        onClick={() => isSpeaking ? stop() : speak(text)}
         disabled={!text}
         className={`p-2 rounded-full transition-colors ${
           text 

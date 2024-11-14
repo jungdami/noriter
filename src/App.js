@@ -14,7 +14,7 @@ const App = () => {
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-green-50 to-blue-50">
         <header className="bg-white/80 backdrop-blur-sm shadow-sm">
           <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-            <h1 className="text-2xl font-bold text-green-700">정담이</h1>
+            <h1 className="text-2xl font-bold text-green-700">방방곡곡</h1>
             <p className="text-sm text-green-600 mt-1">AI 기반 인지 건강 도우미</p>
           </div>
         </header>
