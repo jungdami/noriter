@@ -183,7 +183,7 @@ const GamePage = () => {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold text-gray-800">
-          {type === 'pattern' ? '패턴 매칭 게임' : '카드 매칭 게임'}
+          {type === 'pattern' ? '순서 기억하기' : '짝 맞추기'}
         </h2>
         <button
           onClick={() => navigate('/assessment')}
