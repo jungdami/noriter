@@ -10,6 +10,137 @@ const ProgressBar = ({ value, maxValue, colorClass }) => (
   </div>
 );
 
+const ScoreTrendChart = () => {
+  const data = [
+    { month: '1월', score: 70 },
+    { month: '2월', score: 75 },
+    { month: '3월', score: 80 },
+    { month: '4월', score: 85 }
+  ];
+
+  const width = 600;
+  const height = 200;
+  const padding = { top: 20, right: 30, bottom: 40, left: 50 };
+  const graphWidth = width - (padding.left + padding.right);
+  const graphHeight = height - (padding.top + padding.bottom);
+
+  const points = data.map((point, index) => ({
+    x: padding.left + (index * (graphWidth / (data.length - 1))),
+    y: height - padding.bottom - ((point.score - 60) * (graphHeight / 30))
+  }));
+
+  const pathString = points.reduce((path, point, index) => {
+    return path + (index === 0 ? `M ${point.x},${point.y}` : ` L ${point.x},${point.y}`);
+  }, '');
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+      <h3 className="text-lg font-semibold text-gray-700 mb-4">평균 점수 변화</h3>
+      <div className="h-52">
+        <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
+          {/* Background grid lines */}
+          {[60, 70, 80, 90].map((value, index) => (
+            <g key={value}>
+              <line
+                x1={padding.left - 5}
+                y1={height - padding.bottom - (index * (graphHeight / 3))}
+                x2={width - padding.right}
+                y2={height - padding.bottom - (index * (graphHeight / 3))}
+                stroke="#E5E7EB"
+                strokeWidth="1"
+              />
+              <text
+                x={padding.left - 10}
+                y={height - padding.bottom - (index * (graphHeight / 3))}
+                textAnchor="end"
+                alignmentBaseline="middle"
+                className="text-sm fill-gray-500"
+              >
+                {value}
+              </text>
+            </g>
+          ))}
+
+          {/* X축 기준선 */}
+          <line
+            x1={padding.left}
+            y1={height - padding.bottom}
+            x2={width - padding.right}
+            y2={height - padding.bottom}
+            stroke="#E5E7EB"
+            strokeWidth="2"
+          />
+
+          {/* Y축 기준선 */}
+          <line
+            x1={padding.left}
+            y1={padding.top}
+            x2={padding.left}
+            y2={height - padding.bottom}
+            stroke="#E5E7EB"
+            strokeWidth="2"
+          />
+
+          {/* 그래프 라인 */}
+          <path
+            d={pathString}
+            fill="none"
+            stroke="#22C55E"
+            strokeWidth="3"
+          />
+
+          {/* 데이터 포인트와 라벨 */}
+          {points.map((point, index) => (
+            <g key={index}>
+              <circle
+                cx={point.x}
+                cy={point.y}
+                r="6"
+                fill="#22C55E"
+                stroke="white"
+                strokeWidth="2"
+              />
+              
+              <text
+                x={point.x}
+                y={point.y - 15}
+                textAnchor="middle"
+                className="text-sm font-semibold fill-gray-700"
+              >
+                {data[index].score}점
+              </text>
+
+              <text
+                x={point.x}
+                y={height - (padding.bottom - 25)}
+                textAnchor="middle"
+                className="text-sm fill-gray-500"
+              >
+                {data[index].month}
+              </text>
+            </g>
+          ))}
+
+          {/* Area under the line */}
+          <path
+            d={`${pathString} L ${points[points.length-1].x},${height - padding.bottom} L ${points[0].x},${height - padding.bottom} Z`}
+            fill="url(#gradient)"
+            opacity="0.1"
+          />
+
+          {/* Gradient definition */}
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#22C55E" />
+              <stop offset="100%" stopColor="#22C55E" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  );
+};
+
 const UserStatusPage = () => {
   const userData = {
     name: "김정담",
@@ -97,7 +228,6 @@ const UserStatusPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-6">
-      {/* 환영 메시지와 전체 점수 */}
       <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl shadow-sm p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -120,7 +250,8 @@ const UserStatusPage = () => {
           </div>
         </div>
 
-        {/* 세부 능력 점수 */}
+        <ScoreTrendChart />
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {Object.entries(userData.healthStatus.세부능력).map(([키, 값]) => (
             <div key={키} className="bg-white rounded-lg p-4 shadow-sm">
@@ -150,7 +281,6 @@ const UserStatusPage = () => {
         </div>
       </div>
 
-      {/* 오늘의 활동 */}
       <div className="bg-white rounded-xl shadow-sm p-6">
         <h3 className="text-2xl font-bold text-gray-800 mb-4">
           오늘 하신 일
@@ -176,7 +306,6 @@ const UserStatusPage = () => {
         </div>
       </div>
 
-      {/* 오늘의 도전 과제 */}
       <div className="bg-white rounded-xl shadow-sm p-6">
         <h3 className="text-2xl font-bold text-gray-800 mb-4">
           오늘의 도전 과제
@@ -195,7 +324,6 @@ const UserStatusPage = () => {
         </div>
       </div>
 
-      {/* 이번 주 목표 달성률 */}
       <div className="bg-white rounded-xl shadow-sm p-6">
         <h3 className="text-2xl font-bold text-gray-800 mb-4">
           이번 주 목표 달성
