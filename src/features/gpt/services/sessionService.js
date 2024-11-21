@@ -11,20 +11,17 @@ class SessionService {
       const session = {
         id: sessionId,
         startTime: new Date().toISOString(),
-        status: 'active',
-        responses: []
+        status: 'active'
       };
 
-      // 로컬 스토리지에 저장
       const sessions = this.getAll();
       sessions[sessionId] = session;
       localStorage.setItem(this.storageKey, JSON.stringify(sessions));
 
-      console.log("Session created:", session);
       return session;
     } catch (error) {
-      console.error('Session creation error:', error);
-      return null;
+      console.error('Session error:', error);
+      return { id: 'temp-' + Date.now() };  // 에러 발생해도 임시 ID 반환
     }
   }
 
@@ -32,49 +29,46 @@ class SessionService {
     try {
       const data = localStorage.getItem(this.storageKey);
       return data ? JSON.parse(data) : {};
-    } catch (error) {
+    } catch {
       return {};
     }
   }
 
   saveResponse(sessionId, userMessage, aiResponse) {
+    if (!sessionId) return;
+
     try {
-      if (!sessionId) return false;
-
       const sessions = this.getAll();
-      const session = sessions[sessionId];
-      if (!session) return false;
+      if (!sessions[sessionId]) {
+        sessions[sessionId] = {
+          id: sessionId,
+          status: 'active',
+          responses: []
+        };
+      }
 
-      session.responses.push({
-        user: userMessage,
-        ai: aiResponse
-      });
-
-      sessions[sessionId] = session;
+      sessions[sessionId].responses = sessions[sessionId].responses || [];
+      sessions[sessionId].responses.push({ userMessage, aiResponse });
+      
       localStorage.setItem(this.storageKey, JSON.stringify(sessions));
-      return true;
     } catch (error) {
-      return false;
+      console.error('Save error:', error);
     }
   }
 
   update(sessionId, updates) {
+    if (!sessionId) return;
+
     try {
-      if (!sessionId) return false;
-
       const sessions = this.getAll();
-      const session = sessions[sessionId];
-      if (!session) return false;
-
       sessions[sessionId] = {
-        ...session,
+        ...sessions[sessionId],
         ...updates
       };
-
+      
       localStorage.setItem(this.storageKey, JSON.stringify(sessions));
-      return true;
     } catch (error) {
-      return false;
+      console.error('Update error:', error);
     }
   }
 }

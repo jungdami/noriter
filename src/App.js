@@ -7,6 +7,7 @@ import ResultsPage from './components/ResultsPage';
 import NotFoundPage from './components/NotFoundPage';
 import GamesListPage from './components/GamesListPage';
 import UserStatusPage from './components/UserStatusPage';
+import DemoFlow from './components/demo/DemoFlow';  // 새로운 데모 플로우 컴포넌트 추가
 
 const App = () => {
   return (
@@ -21,12 +22,13 @@ const App = () => {
         
         <main className="flex-grow">
           <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-          <Routes>
+            <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/status" element={<UserStatusPage />} />
               <Route path="/assessment" element={<AssessmentPage />} />
               <Route path="/games" element={<GamesListPage />} />
               <Route path="/game/:type" element={<GamePage />} />
+              <Route path="/demo" element={<DemoFlow />} /> {/* 데모 플로우 라우트 추가 */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </div>
