@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
 
-const HwatuGame = () => {
+const HwatuGame = ({ onComplete }) => {
   // 화투 카드 데이터
   const hwatuPairs = [
     { month: 1, name: "송학", description: "소나무와 흰 꽃", image: "/images/1.png" },
@@ -13,6 +13,18 @@ const HwatuGame = () => {
     { month: 7, name: "싸리", description: "붉은 띠", image: "/images/7.png" },
     { month: 8, name: "억새", description: "억새", image: "/images/8.png" }
   ];
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.code === 'Space') {
+        event.preventDefault();
+        onComplete?.();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [onComplete]);
 
   // 게임에 사용될 카드 배열 (각 쌍이 두 번씩 들어감)
   const [cards, setCards] = useState([]);

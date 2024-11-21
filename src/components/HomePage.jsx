@@ -9,21 +9,21 @@ const HomePage = () => {
     {
       icon: <User className="w-8 h-8" />,
       title: "안방",
-      description: "인지 능력 상태와 활동 기록을 확인해 보세요",
+      description: "나의 인지 능력 상태와 활동 기록을 확인해 보세요!",
       path: "/status",
       color: "bg-blue-500"
     },
     {
       icon: <MessageCircle className="w-8 h-8" />,
       title: "수다방",
-      description: "AI 도우미 방방이와 즐거운 대화를 나눠 보세요",
+      description: "AI 도우미 '노리'와 즐거운 대화를 나눠 보세요!",
       path: "/assessment",
       color: "bg-green-500"
     },
     {
       icon: <Gamepad className="w-8 h-8" />,
       title: "게임방",
-      description: "재미있는 게임으로 두뇌를 활성화해 보세요",
+      description: "재미있는 게임으로 두뇌를 활성화해 보세요!",
       path: "/games",
       color: "bg-purple-500"
     }
@@ -34,10 +34,10 @@ const HomePage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            방방이와 함께하는<br />즐거운 두뇌 건강
+            노리와 함께하는<br />즐거운 두뇌 건강
           </h1>
           <p className="text-xl text-gray-600">
-            AI 도우미 방방이가 당신의 건강한 하루를 함께합니다
+            AI 도우미 노리가 당신의 건강한 하루를 함께합니다.
           </p>
           
           {/* 데모 모드 버튼 추가 */}

@@ -62,19 +62,17 @@ const DramaChat = ({ onComplete }) => {
   }, [currentStage, onComplete]);
 
   // 새 메시지 표시
-  useEffect(() => {
+// 새 메시지 표시
+useEffect(() => {
     if (currentStage >= 0 && currentStage < conversation.length) {
-      setMessages(prev => [...prev, conversation[currentStage]]);
+      // id가 4일 때 (드라마 대화 시작) 메시지 초기화
+      if (currentStage === 3) { // conversation[3]은 id:4인 메시지
+        setMessages([conversation[currentStage]]);
+      } else {
+        setMessages(prev => [...prev, conversation[currentStage]]);
+      }
     }
   }, [currentStage]);
-
-  // 컴포넌트 마운트 시 첫 대화 시작
-  useEffect(() => {
-    if (currentStage === -1) {
-      setCurrentStage(0);
-    }
-  }, []);
-
   return (
     <div className="space-y-4">
       <div className="flex justify-around bg-white p-4 rounded-xl shadow-sm">
