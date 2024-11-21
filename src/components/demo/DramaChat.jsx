@@ -1,13 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { TextToSpeech } from '../../features/speech/components/TextToSpeech';
+import React, { useState, useEffect } from 'react';
 import { Brain, Heart, Star } from 'lucide-react';
 
 const DramaChat = ({ onComplete }) => {
   const [messages, setMessages] = useState([]);
   const [currentStage, setCurrentStage] = useState(-1);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [canProgress, setCanProgress] = useState(true);
-  const [showPrompt, setShowPrompt] = useState(false);
   
   // 시나리오 대화
   const conversation = [
@@ -51,47 +47,26 @@ const DramaChat = ({ onComplete }) => {
   // 키보드 이벤트 리스너
   useEffect(() => {
     const handleKeyPress = (event) => {
-      if (event.code === 'Space' && canProgress && !isSpeaking) {
+      if (event.code === 'Space') {
         event.preventDefault();
-        progressConversation();
+        if (currentStage < conversation.length - 1) {
+          setCurrentStage(prev => prev + 1);
+        } else {
+          onComplete?.();
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [canProgress, isSpeaking]);
-
-  // 대화 진행
-  const progressConversation = useCallback(() => {
-    if (currentStage < conversation.length - 1) {
-      setCurrentStage(prev => prev + 1);
-      setCanProgress(false);
-      setShowPrompt(false);
-    } else {
-      onComplete?.();
-    }
-  }, [currentStage, conversation.length, onComplete]);
+  }, [currentStage, onComplete]);
 
   // 새 메시지 표시
   useEffect(() => {
     if (currentStage >= 0 && currentStage < conversation.length) {
-      const currentMessage = conversation[currentStage];
-      setMessages(prev => [...prev, {
-        id: Date.now(),
-        content: currentMessage.message,
-        type: currentMessage.speaker
-      }]);
+      setMessages(prev => [...prev, conversation[currentStage]]);
     }
   }, [currentStage]);
-
-  // 음성 상태 변경 핸들러
-  const handleSpeakingChange = useCallback((speaking) => {
-    setIsSpeaking(speaking);
-    if (!speaking) {
-      setCanProgress(true);
-      setShowPrompt(true);
-    }
-  }, []);
 
   // 컴포넌트 마운트 시 첫 대화 시작
   useEffect(() => {
@@ -100,80 +75,51 @@ const DramaChat = ({ onComplete }) => {
     }
   }, []);
 
-  const MetricsDisplay = React.memo(() => (
-    <div className="flex justify-around bg-white p-4 rounded-xl shadow-sm">
-      <div className="flex items-center gap-2">
-        <Brain className="w-5 h-5 text-blue-500" />
-        <div className="text-sm">
-          <div className="font-semibold">기억력</div>
-          <div className="text-blue-500">85%</div>
-        </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <Star className="w-5 h-5 text-purple-500" />
-        <div className="text-sm">
-          <div className="font-semibold">이해력</div>
-          <div className="text-purple-500">90%</div>
-        </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <Heart className="w-5 h-5 text-red-500" />
-        <div className="text-sm">
-          <div className="font-semibold">참여도</div>
-          <div className="text-red-500">95%</div>
-        </div>
-      </div>
-    </div>
-  ));
-
   return (
     <div className="space-y-4">
-      <MetricsDisplay />
+      <div className="flex justify-around bg-white p-4 rounded-xl shadow-sm">
+        <div className="flex items-center gap-2">
+          <Brain className="w-5 h-5 text-blue-500" />
+          <div className="text-sm">
+            <div className="font-semibold">기억력</div>
+            <div className="text-blue-500">85%</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Star className="w-5 h-5 text-purple-500" />
+          <div className="text-sm">
+            <div className="font-semibold">이해력</div>
+            <div className="text-purple-500">90%</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Heart className="w-5 h-5 text-red-500" />
+          <div className="text-sm">
+            <div className="font-semibold">참여도</div>
+            <div className="text-red-500">95%</div>
+          </div>
+        </div>
+      </div>
       
       <div className="bg-white rounded-xl shadow-sm p-4 h-96 overflow-y-auto">
         {messages.map(message => (
           <div
             key={message.id}
             className={`mb-4 flex ${
-              message.type === 'user' ? 'justify-end' : 'justify-start'
+              message.speaker === 'user' ? 'justify-end' : 'justify-start'
             }`}
           >
             <div
               className={`max-w-[80%] p-3 rounded-lg ${
-                message.type === 'user'
+                message.speaker === 'user'
                   ? 'bg-green-500 text-white'
                   : 'bg-gray-100'
               }`}
             >
-              {message.content}
-              {message.type === 'ai' && (
-                <div className="mt-2">
-                  <TextToSpeech 
-                    text={message.content}
-                    onSpeakingChange={handleSpeakingChange}
-                    autoPlay={true}
-                  />
-                </div>
-              )}
+              {message.message}
             </div>
           </div>
         ))}
-      </div>
-
-      <div className="p-4 bg-white rounded-xl shadow-sm">
-        <div className={`text-center transition-opacity duration-300 ${
-          showPrompt ? 'opacity-100' : 'opacity-0'
-        }`}>
-          {canProgress && !isSpeaking ? (
-            <div className="text-blue-600 font-medium">
-              스페이스바를 눌러서 계속하기
-            </div>
-          ) : (
-            <div className="text-gray-500">
-              {isSpeaking ? '대화 진행 중...' : '잠시만 기다려주세요...'}
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );

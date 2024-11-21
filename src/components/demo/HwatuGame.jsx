@@ -4,14 +4,14 @@ import { Heart } from 'lucide-react';
 const HwatuGame = () => {
   // 화투 카드 데이터
   const hwatuPairs = [
-    { month: 1, name: "송화", description: "소나무와 흰 꽃" },
-    { month: 2, name: "매화", description: "매화" },
-    { month: 3, name: "벚화", description: "벚꽃" },
-    { month: 4, name: "흑싸리", description: "흑싸리" },
-    { month: 5, name: "난초", description: "난초" },
-    { month: 6, name: "목단", description: "모란" },
-    { month: 7, name: "홍단", description: "붉은 띠" },
-    { month: 8, name: "공산", description: "공산" }
+    { month: 1, name: "송학", description: "소나무와 흰 꽃", image: "/images/1.png" },
+    { month: 2, name: "매조", description: "매화", image: "/images/2.png" },
+    { month: 3, name: "벚꽃", description: "벚꽃", image: "/images/3.png" },
+    { month: 4, name: "등나무", description: "흑싸리", image: "/images/4.png" },
+    { month: 5, name: "제비붓꽃", description: "난초", image: "/images/5.png" },
+    { month: 6, name: "모란", description: "모란", image: "/images/6.png" },
+    { month: 7, name: "싸리", description: "붉은 띠", image: "/images/7.png" },
+    { month: 8, name: "억새", description: "억새", image: "/images/8.png" }
   ];
 
   // 게임에 사용될 카드 배열 (각 쌍이 두 번씩 들어감)
@@ -75,7 +75,7 @@ const HwatuGame = () => {
   // 카드 컴포넌트
   const Card = ({ card, onClick }) => {
     const isFlipped = flipped.includes(card.id) || matched.includes(card.id);
-
+  
     return (
       <div
         onClick={() => onClick(card.id)}
@@ -89,10 +89,11 @@ const HwatuGame = () => {
           ${matched.includes(card.id) ? 'border-green-500' : 'border-gold-500'}`}
         >
           {isFlipped ? (
-            <div className="text-center p-2">
-              <div className="text-lg font-semibold">{card.name}</div>
-              <div className="text-sm text-gray-600">{card.month}월</div>
-            </div>
+            <img
+              src={card.image}
+              alt={card.name}
+              className="w-full h-full object-cover rounded-xl"
+            />
           ) : (
             <div className="text-white text-2xl">花</div>
           )}
@@ -100,6 +101,7 @@ const HwatuGame = () => {
       </div>
     );
   };
+  
 
   return (
     <div className="p-4 bg-green-50 rounded-xl">
