@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const AZURE_SUBSCRIPTION_KEY = process.env.REACT_APP_AZURE_SUBSCRIPTION_KEY;
+const AZURE_SUBSCRIPTION_KEY = process.env.REACT_APP_AZURE_SPEECH_KEY;
 const AZURE_REGION = process.env.REACT_APP_AZURE_REGION || 'koreacentral';
 
 export const azureTtsApi = {

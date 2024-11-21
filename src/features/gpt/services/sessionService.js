@@ -2,43 +2,28 @@
 
 class SessionService {
   constructor() {
-    this.storageKey = 'userSessions';
+    this.storageKey = 'chat_sessions';
   }
 
   create() {
-    const sessionId = Date.now().toString();
-    const sessionData = {
-      id: sessionId,
-      startTime: new Date().toISOString(),
-      responses: [],
-      cognitiveScore: 0,
-      cognitiveLevel: null,
-      assessment: null,
-      status: 'active',
-    };
-
-    this.save(sessionId, sessionData);
-    return sessionData;
-  }
-
-  save(sessionId, data) {
     try {
+      const sessionId = Date.now().toString();
+      const session = {
+        id: sessionId,
+        startTime: new Date().toISOString(),
+        status: 'active',
+        responses: []
+      };
+
+      // 로컬 스토리지에 저장
       const sessions = this.getAll();
-      sessions[sessionId] = data;
+      sessions[sessionId] = session;
       localStorage.setItem(this.storageKey, JSON.stringify(sessions));
-      return true;
-    } catch (error) {
-      console.error('Session save error:', error);
-      return false;
-    }
-  }
 
-  get(sessionId) {
-    try {
-      const sessions = this.getAll();
-      return sessions[sessionId] || null;
+      console.log("Session created:", session);
+      return session;
     } catch (error) {
-      console.error('Session retrieval error:', error);
+      console.error('Session creation error:', error);
       return null;
     }
   }
@@ -48,94 +33,51 @@ class SessionService {
       const data = localStorage.getItem(this.storageKey);
       return data ? JSON.parse(data) : {};
     } catch (error) {
-      console.error('Sessions retrieval error:', error);
       return {};
+    }
+  }
+
+  saveResponse(sessionId, userMessage, aiResponse) {
+    try {
+      if (!sessionId) return false;
+
+      const sessions = this.getAll();
+      const session = sessions[sessionId];
+      if (!session) return false;
+
+      session.responses.push({
+        user: userMessage,
+        ai: aiResponse
+      });
+
+      sessions[sessionId] = session;
+      localStorage.setItem(this.storageKey, JSON.stringify(sessions));
+      return true;
+    } catch (error) {
+      return false;
     }
   }
 
   update(sessionId, updates) {
     try {
-      const session = this.get(sessionId);
-      if (!session) {
-        return false;
-      }
+      if (!sessionId) return false;
 
-      const updatedSession = {
+      const sessions = this.getAll();
+      const session = sessions[sessionId];
+      if (!session) return false;
+
+      sessions[sessionId] = {
         ...session,
-        ...updates,
-        lastUpdated: new Date().toISOString()
+        ...updates
       };
 
-      return this.save(sessionId, updatedSession);
-    } catch (error) {
-      console.error('Session update error:', error);
-      return false;
-    }
-  }
-
-  delete(sessionId) {
-    try {
-      const sessions = this.getAll();
-      delete sessions[sessionId];
       localStorage.setItem(this.storageKey, JSON.stringify(sessions));
       return true;
     } catch (error) {
-      console.error('Session deletion error:', error);
       return false;
-    }
-  }
-
-  saveResponse(sessionId, question, answer) {
-    try {
-      const session = this.get(sessionId);
-      if (!session) {
-        return false;
-      }
-
-      const response = {
-        question,
-        answer,
-        timestamp: new Date().toISOString()
-      };
-
-      session.responses = session.responses || [];
-      session.responses.push(response);
-
-      return this.save(sessionId, session);
-    } catch (error) {
-      console.error('Response save error:', error);
-      return false;
-    }
-  }
-
-  calculateScore(sessionId) {
-    try {
-      const session = this.get(sessionId);
-      if (!session) {
-        return 0;
-      }
-
-      const responses = session.responses || [];
-      let score = 0;
-      
-      responses.forEach(response => {
-        if (response.answer && response.answer.length > 10) score += 1;
-        if (response.answer && response.answer.includes('?')) score += 0.5;
-        if (response.answer && /[0-9]/.test(response.answer)) score += 0.5;
-      });
-
-      const normalizedScore = Math.min(Math.round((score / Math.max(responses.length, 1)) * 100), 100);
-      session.cognitiveScore = normalizedScore;
-      
-      this.save(sessionId, session);
-      return normalizedScore;
-    } catch (error) {
-      console.error('Score calculation error:', error);
-      return 0;
     }
   }
 }
 
-// 싱글톤 인스턴스 생성 및 내보내기
 const sessionService = new SessionService();
 export default sessionService;

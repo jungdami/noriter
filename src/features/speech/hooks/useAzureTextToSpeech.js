@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
-import axios from 'axios';
+import { azureTtsApi } from '../api/azureTtsApi';
 
 export const useAzureTextToSpeech = (options = {}) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -30,36 +30,54 @@ export const useAzureTextToSpeech = (options = {}) => {
     return cleanup;
   }, [cleanup]);
 
+  const generateSSML = useCallback((text) => {
+    return `
+      <speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="ko-KR">
+        <voice name="${settings.voice}">
+          <prosody rate="${settings.rate}" pitch="${settings.pitch}">
+            <mstts:express-as style="${settings.style}" xmlns:mstts="http://www.w3.org/2001/mstts">
+              ${text}
+            </mstts:express-as>
+          </prosody>
+        </voice>
+      </speak>
+    `;
+  }, [settings]);
+
   const speak = useCallback(async (text) => {
     if (!text) return;
     
     try {
       cleanup();
       setError(null);
+
+      const ssml = generateSSML(text);
+      const audioBlob = await azureTtsApi.synthesizeSpeech(ssml);
+      const audioUrl = URL.createObjectURL(audioBlob);
       
-      // 임시 해결책: Web Speech API 사용
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ko-KR';
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
+      audioRef.current = new Audio(audioUrl);
       
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => {
-        setError('음성 재생 중 오류가 발생했습니다.');
+      audioRef.current.onplay = () => setIsSpeaking(true);
+      audioRef.current.onpause = () => setIsSpeaking(false);
+      audioRef.current.onended = () => {
         setIsSpeaking(false);
+        URL.revokeObjectURL(audioUrl);
+      };
+      audioRef.current.onerror = () => {
+        setError('오디오 재생 중 오류가 발생했습니다.');
+        setIsSpeaking(false);
+        URL.revokeObjectURL(audioUrl);
       };
 
-      window.speechSynthesis.speak(utterance);
+      await audioRef.current.play();
     } catch (err) {
       console.error('TTS error:', err);
       setError('음성 변환 중 오류가 발생했습니다.');
       setIsSpeaking(false);
     }
-  }, [cleanup]);
+  }, [cleanup, generateSSML]);
 
   const stop = useCallback(() => {
-    window.speechSynthesis.cancel();
     cleanup();
     setIsSpeaking(false);
   }, [cleanup]);
