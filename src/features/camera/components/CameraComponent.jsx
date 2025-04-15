@@ -16,19 +16,19 @@ export const CameraComponent = ({ onUserDetected }) => {
 
   const [isUserDetected, setIsUserDetected] = useState(false);
 
-  // 사용자 감지 시 상태 관리 및 부모 컴포넌트 통지
+  // 사용자 감지 시 상태 관리 및 부모 컴포넌트 통지..
   const handleUserDetected = () => {
     setIsUserDetected(true);
     onUserDetected?.(true);
   };
 
-  // 사용자가 화면을 벗어날 때 상태 관리 및 부모 컴포넌트 통지
+  // 사용자가 화면을 벗어날 때 상태 관리 및 부모 컴포넌트 통지..
   const handleUserLeft = () => {
     setIsUserDetected(false);
     onUserDetected?.(false);
   };
 
-  // 카메라 스트림이 시작되고 사용자가 감지된 상태라면 부모에게 통지
+  // 카메라 스트림이 시작되고 사용자가 감지된 상태라면 부모에게 통지..
   useEffect(() => {
     if (stream && videoRef.current && isUserDetected) {
       onUserDetected?.(true);

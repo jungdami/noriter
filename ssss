@@ -1,0 +1,27 @@
+[1mdiff --git a/src/features/camera/components/CameraComponent.jsx b/src/features/camera/components/CameraComponent.jsx[m
+[1mindex bed18d2..2d6f302 100644[m
+[1m--- a/src/features/camera/components/CameraComponent.jsx[m
+[1m+++ b/src/features/camera/components/CameraComponent.jsx[m
+[36m@@ -16,19 +16,19 @@[m [mexport const CameraComponent = ({ onUserDetected }) => {[m
+ [m
+   const [isUserDetected, setIsUserDetected] = useState(false);[m
+ [m
+[31m-  // 사용자 감지 시 상태 관리 및 부모 컴포넌트 통지[m
+[32m+[m[32m  // 사용자 감지 시 상태 관리 및 부모 컴포넌트 통지..[m
+   const handleUserDetected = () => {[m
+     setIsUserDetected(true);[m
+     onUserDetected?.(true);[m
+   };[m
+ [m
+[31m-  // 사용자가 화면을 벗어날 때 상태 관리 및 부모 컴포넌트 통지[m
+[32m+[m[32m  // 사용자가 화면을 벗어날 때 상태 관리 및 부모 컴포넌트 통지..[m
+   const handleUserLeft = () => {[m
+     setIsUserDetected(false);[m
+     onUserDetected?.(false);[m
+   };[m
+ [m
+[31m-  // 카메라 스트림이 시작되고 사용자가 감지된 상태라면 부모에게 통지[m
+[32m+[m[32m  // 카메라 스트림이 시작되고 사용자가 감지된 상태라면 부모에게 통지..[m
+   useEffect(() => {[m
+     if (stream && videoRef.current && isUserDetected) {[m
+       onUserDetected?.(true);[m
